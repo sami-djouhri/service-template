@@ -1,0 +1,28 @@
+services:
+  my-service:
+    build: .
+    image: homelab/my-service:latest
+    container_name: my-service
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:81XX:8000"
+    environment:
+      SERVICE_NAME: my-service
+      ENV: prod
+      MQTT_HOST: mosquitto
+      MQTT_PORT: "1883"
+      AUTH_REQUIRED: "true"
+      LOG_LEVEL: INFO
+    networks:
+      - homelab
+    depends_on:
+      - mosquitto
+    labels:
+      homelab.service: "my-service"
+      homelab.category: "eigenbau"
+      homelab.route: "/my-service/"
+
+networks:
+  homelab:
+    external: true
+    name: homelab
